@@ -165,7 +165,7 @@ export function usePatient(id: string) {
     if (!ids || ids.includes(Number(id))) load();
   });
 
-  return { patient, setPatient, isLoading, notFound, error };
+  return { patient, setPatient, isLoading, notFound, error, refresh: load };
 }
 
 export function matchesSearch(patient: PatientRecord, query: string) {

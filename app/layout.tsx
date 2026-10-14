@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat_Alternates } from "next/font/google";
+import "@fontsource/noto-sans-arabic/400.css";
+import "@fontsource/noto-sans-arabic/500.css";
+import "@fontsource/noto-sans-arabic/600.css";
+import "@fontsource/noto-sans-arabic/700.css";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
 import { SearchProvider } from "@/context/SearchContext";

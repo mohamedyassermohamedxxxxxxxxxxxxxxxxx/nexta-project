@@ -11,7 +11,7 @@ export function StateBadge({ state }: { state: string }) {
   const meta = getStateMeta(state);
   return (
     <span
-      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${meta.badge}`}
+      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[11px] font-bold tracking-wide ring-1 ring-inset ${meta.badge}`}
     >
       <span className={`h-1.5 w-1.5 rounded-full ${meta.dot}`} />
       {meta.label}
@@ -19,7 +19,7 @@ export function StateBadge({ state }: { state: string }) {
   );
 }
 
-export function Avatar({ name, size = "md" }: { name: string; size?: "sm" | "md" | "lg" }) {
+export function Avatar({ name, size = "md", statusDot }: { name: string; size?: "sm" | "md" | "lg"; statusDot?: string }) {
   const sizes = {
     sm: "h-8 w-8 text-xs",
     md: "h-10 w-10 text-sm",
@@ -27,9 +27,10 @@ export function Avatar({ name, size = "md" }: { name: string; size?: "sm" | "md"
   };
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-linear-to-br from-brand-500 to-teal-400 font-semibold text-white shadow-sm ${sizes[size]}`}
+      className={`relative inline-flex shrink-0 items-center justify-center rounded-full bg-linear-to-br from-brand-500 to-teal-400 font-semibold text-white shadow-sm ${sizes[size]}`}
     >
       {initials(name)}
+      {statusDot && <span aria-hidden="true" className={`absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white ${statusDot}`} />}
     </span>
   );
 }
@@ -39,20 +40,22 @@ export function PageHero({
   subtitle,
   actions,
   children,
+  titleClassName,
 }: {
   title: ReactNode;
   subtitle?: ReactNode;
   actions?: ReactNode;
   children?: ReactNode;
+  titleClassName?: string;
 }) {
   return (
-    <section className="page-hero pb-24 pt-10 text-white">
-      <div className="mx-auto flex max-w-screen-2xl flex-col gap-6 px-4 sm:px-6 lg:px-10">
+    <section className="page-hero pb-16 pt-8 text-white sm:pb-18 sm:pt-10">
+      <div className="mx-auto flex max-w-screen-2xl flex-col gap-5 px-4 sm:px-6 lg:px-10">
         {children}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
-            {subtitle && <p className="mt-2 max-w-2xl text-sm text-white/75 sm:text-base">{subtitle}</p>}
+            <h1 className={`${titleClassName ?? "font-display"} text-3xl font-bold tracking-tight sm:text-4xl`}>{title}</h1>
+            {subtitle && <p className="mt-2 max-w-2xl text-sm font-medium text-white/82 sm:text-base">{subtitle}</p>}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
         </div>
@@ -89,7 +92,7 @@ export function HeroButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="inline-flex items-center gap-2 rounded-xl bg-white/15 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 backdrop-blur transition hover:bg-white/25 disabled:opacity-60"
+      className="inline-flex items-center gap-2 rounded-xl bg-white/12 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 shadow-sm shadow-slate-950/20 backdrop-blur transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-70"
     >
       {children}
     </button>

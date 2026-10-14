@@ -42,11 +42,82 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Gradient band behind page titles, keeps the original medical background image */
+.font-arabic {
+  font-family: "Noto Sans Arabic", var(--font-inter), sans-serif;
+}
+
+/* Reference palette for the dashboard, delivery board, and patient detail. */
+.operations-theme {
+  --color-ink-950: #0a292a;
+  --color-ink-900: #153b3d;
+  --color-ink-800: #205454;
+  --color-ink-700: #2d706c;
+
+  --color-brand-50: #eff8f6;
+  --color-brand-100: #dcefeb;
+  --color-brand-200: #bfe1d9;
+  --color-brand-300: #91cbbf;
+  --color-brand-400: #5aab9d;
+  --color-brand-500: #318d7e;
+  --color-brand-600: #24786d;
+  --color-brand-700: #1c625b;
+
+  --color-canvas: #eef3f4;
+  background-color: var(--color-canvas);
+  color: var(--color-ink-900);
+}
+
+.operations-theme .app-navbar {
+  background-color: var(--color-canvas);
+  border-color: #dce6e7;
+  backdrop-filter: none;
+}
+
+.operations-theme .page-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  background-image: linear-gradient(135deg, #0d3e3d 0%, #145b54 42%, #1b7b73 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 18px 36px rgba(9, 50, 54, 0.08);
+}
+
+.operations-theme .page-hero > div {
+  position: relative;
+  z-index: 1;
+}
+
+.operations-theme .page-hero::before,
+.operations-theme .page-hero::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  border-radius: 9999px;
+  background: rgba(208, 246, 236, 0.12);
+}
+
+.operations-theme .page-hero::before {
+  width: 26rem;
+  height: 26rem;
+  right: -7rem;
+  top: -10rem;
+}
+
+.operations-theme .page-hero::after {
+  width: 20rem;
+  height: 20rem;
+  right: 4rem;
+  bottom: -9rem;
+  background: rgba(214, 250, 242, 0.08);
+}
+
+/* Quiet hero treatment: darker navy-to-blue gradient without the busy ECG backdrop */
 .page-hero {
   background-image:
-    linear-gradient(115deg, rgb(7 24 42 / 0.94) 0%, rgb(20 99 196 / 0.85) 55%, rgb(22 169 154 / 0.8) 100%),
-    url("../static/bg.png");
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.24), transparent 32%),
+    radial-gradient(circle at 80% 20%, rgba(45, 212, 191, 0.2), transparent 30%),
+    linear-gradient(135deg, rgba(5, 18, 31, 0.97) 0%, rgba(16, 44, 74, 0.96) 42%, rgba(18, 93, 155, 0.92) 68%, rgba(8, 142, 130, 0.88) 100%);
   background-size: cover;
   background-position: center;
 }
@@ -55,4 +126,27 @@ body {
 .scroll-thin {
   scrollbar-width: thin;
   scrollbar-color: rgb(148 163 184 / 0.6) transparent;
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .patient-report,
+  .patient-report * {
+    visibility: visible !important;
+  }
+
+  .patient-report {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .patient-report-controls {
+    display: none !important;
+  }
 }

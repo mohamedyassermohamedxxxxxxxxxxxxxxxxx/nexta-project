@@ -16,7 +16,7 @@ export default function PatientPdfViewer({ pdfs }: { pdfs: Pdf[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="patient-report-controls flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1">
           {pdfs.map((p, i) => (
             <button

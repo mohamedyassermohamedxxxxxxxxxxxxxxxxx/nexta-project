@@ -4,6 +4,7 @@ import Database from "better-sqlite3";
 import { EventEmitter } from "events";
 import fs from "fs";
 import path from "path";
+import { normalizePhone } from "@/lib/phone";
 import { getConfig } from "@/lib/config";
 import {
   deriveState,
@@ -733,9 +734,9 @@ function parsePhone(field: string | undefined, componentSep: string, repeatSep: 
   for (const rep of field.split(repeatSep)) {
     const c = rep.split(componentSep);
     const plain = c[0]?.replace(/[^\d+]/g, "") || "";
-    if (plain.replace("+", "").length >= 7) return plain;
+    if (plain.replace(/\D/g, "").length >= 7) return normalizePhone(plain);
     const composed = [c[4], c[5], c[6]].map((p) => (p || "").replace(/\D/g, "")).join("");
-    if (composed.length >= 7) return (c[4] ? "+" : "") + composed;
+    if (composed.length >= 7) return normalizePhone(c[4] ? `+${composed}` : composed);
   }
   return null;
 }

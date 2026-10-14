@@ -10,7 +10,7 @@ export type DateFilter = {
   to: string;
 };
 
-export const DEFAULT_DATE_FILTER: DateFilter = { preset: "today", from: "", to: "" };
+export const DEFAULT_DATE_FILTER: DateFilter = { preset: "all", from: "", to: "" };
 
 export const DATE_PRESETS: { value: DatePreset; label: string }[] = [
   { value: "today", label: "Today" },

@@ -5,6 +5,7 @@
 import Database from "better-sqlite3";
 import fs from "fs";
 import path from "path";
+import { normalizePhone } from "@/lib/phone";
 
 export type JobState =
   | "waiting" // print job received, PDF not available yet
@@ -240,12 +241,25 @@ export function getJob(id: number): JobRow | undefined {
 export function setManualPhone(id: number, phone: string): JobRow | undefined {
   const job = getJob(id);
   if (!job) return undefined;
-  const whatsapp_num = phone || null;
+  const whatsapp_num = normalizePhone(phone) || null;
   // A new number deserves another attempt, even after a failed send
   const state = deriveState({ state: "waiting", whatsapp_num, pdf_ref: job.pdf_ref });
   getDb()
     .prepare("UPDATE jobs SET whatsapp_num = ?, phone_source = ?, state = ?, sent_at = NULL WHERE id = ?")
     .run(whatsapp_num, whatsapp_num ? "manual" : null, state, id);
+  return getJob(id);
+}
+
+/** Attach a manually uploaded PDF to a job without changing ETIAM's database. */
+export function addManualPdf(id: number, filePath: string): JobRow | undefined {
+  const job = getJob(id);
+  if (!job) return undefined;
+  const sources = [...pdfSources(job.pdf_ref), `file:${filePath}`];
+  const pdf_ref = JSON.stringify(sources);
+  const state = deriveState({ ...job, pdf_ref });
+  getDb()
+    .prepare("UPDATE jobs SET pdf_ref = ?, state = ? WHERE id = ?")
+    .run(pdf_ref, state, id);
   return getJob(id);
 }
 

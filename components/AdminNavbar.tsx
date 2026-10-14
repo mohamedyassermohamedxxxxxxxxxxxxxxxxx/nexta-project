@@ -8,7 +8,12 @@ import { ChevronDown, KanbanSquare, LayoutDashboard, LogOut, Search, Settings, X
 import nexta from '@/static/nexta.png';
 import { useSearch } from '@/context/SearchContext';
 
-const tabs = [
+const tabs: Array<{
+  href: string;
+  label: string;
+  icon: typeof LayoutDashboard | typeof KanbanSquare;
+  badge?: string;
+}> = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/organizer', label: 'Organizer', icon: KanbanSquare },
 ];
@@ -69,25 +74,36 @@ export default function AdminNavbar() {
     pathname?.startsWith(href) || (href === '/admin' && pathname?.startsWith('/patient'));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-lg">
+    <header className="app-navbar sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-screen-2xl items-center gap-4 px-4 sm:px-6 lg:px-10">
         <Link href="/admin" className="flex shrink-0 items-center">
           <Image src={nexta} alt="Nexta" className="h-7 w-auto" priority />
         </Link>
 
         <nav className="hidden items-center gap-1 rounded-xl bg-slate-100 p-1 md:flex">
-          {tabs.map(({ href, label, icon: Icon }) => (
+          {tabs.map(({ href, label, icon: Icon, badge }) => (
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-sm font-semibold transition ${
+              className={`relative flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-sm font-semibold transition ${
                 isActive(href)
-                  ? 'bg-white text-brand-600 shadow-sm'
+                  ? 'bg-white text-brand-600 shadow-sm ring-1 ring-brand-100'
                   : 'text-slate-500 hover:text-ink-900'
               }`}
             >
               <Icon className="h-4 w-4" />
               {label}
+              {badge && (
+                <span
+                  className={`ml-0.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
+                    isActive(href)
+                      ? 'bg-brand-100 text-brand-700'
+                      : 'bg-slate-200 text-slate-600'
+                  }`}
+                >
+                  {badge}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -124,9 +140,9 @@ export default function AdminNavbar() {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className="flex items-center gap-2 rounded-xl p-1 pr-2 transition hover:bg-slate-100"
+              className="flex items-center gap-2 rounded-xl p-1 pr-2 transition hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-ink-700 to-brand-500 text-sm font-semibold text-white">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-ink-700 to-brand-500 text-sm font-semibold text-white shadow-sm shadow-brand-900/20">
                 {userEmail[0].toUpperCase()}
               </span>
               <ChevronDown className="hidden h-4 w-4 text-slate-400 sm:block" />
